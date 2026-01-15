@@ -223,6 +223,7 @@ GameObject:
   - component: {fileID: 6557474612201005330}
   - component: {fileID: 7277893185302539869}
   - component: {fileID: 1895893765492033983}
+  - component: {fileID: 4111676211985281645}
   m_Layer: 5
   m_Name: Slot
   m_TagString: Untagged
@@ -289,3 +290,18 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &4111676211985281645
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7820314257026018499}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 56d56e8ee36938f408e02216ba3170d5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::InventorySlot
+  iconImage: {fileID: 176137647826617059}
+  amountText: {fileID: 6722528598239536727}
+  myIndex: 0

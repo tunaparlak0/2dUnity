@@ -1,94 +1,117 @@
 ﻿using UnityEngine;
 using UnityEngine.InputSystem;
 using TMPro;
-using UnityEngine.UI; // Image icin sart!
-using System.Collections.Generic; // Listeler icin
+using UnityEngine.UI;
+using System.Collections.Generic;
 
 public class InventoryUI : MonoBehaviour
 {
-    public GameObject inventoryPanel;
-    public Transform itemsParent;   // Grid izgarasi
-    public GameObject slotPrefab;   // Kutu kalibi
+    [Header("UI Referanslari")]
+    public GameObject inventoryPanel; // "I" ile acilan buyuk panel
+    public Transform inventoryGrid;   // Cantanin slotlarinin dizilecegi yer
+    public Transform hotbarGrid;      // Hotbarin slotlarinin dizilecegi yer
+    public GameObject slotPrefab;     // Kutu kalibi
+
+    [Header("Secim Gorseli")]
+    public GameObject selectorFrame;  // Secili kutunun etrafindaki cerceve
 
     PlayerInventory inventory;
 
-    // Olusturdugumuz slotlari bu listede tutacagiz ki sonra tekrar ulasabilelim
-    List<GameObject> slots = new List<GameObject>();
+    // Tum slotlari tek listede tutalim (Ilk 8'i hotbar, gerisi canta)
+    List<GameObject> allSlots = new List<GameObject>();
 
-    public int totalSlotCount = 24; // Kac kutumuz olacak? (8x3 = 24)
+    int totalSlotCount = 24; // 8 Hotbar + 16 Canta
+    int selectedSlotIndex = 0; // Su an hangi slot secili?
+
+    // --- EKLEME 1: Singleton Instance ---
+    public static InventoryUI instance;
+
+    // --- EKLEME 2: Awake Fonksiyonu (Start'tan once calisir) ---
+    void Awake()
+    {
+        instance = this;
+    }
 
     void Start()
     {
         inventory = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerInventory>();
         inventory.onItemChangedCallback += UpdateUI;
 
-        // --- YENI KISIM: Baslangista bos kutulari olustur ---
+        // --- SLOTLARI OLUSTURMA ---
         for (int i = 0; i < totalSlotCount; i++)
         {
-            // Kutuyu olustur ve Grid'in icine at
-            GameObject newSlot = Instantiate(slotPrefab, itemsParent);
-            // Bu kutuyu listemize kaydet
-            slots.Add(newSlot);
-        }
-        // ----------------------------------------------------
+            GameObject newSlot;
 
-        inventoryPanel.SetActive(false);
-        // Baslangista bir kere calistir ki kutularin ici bos gözüksün
+            // Eger ilk 8 slottan biriyse -> Hotbar'a koy
+            if (i < 8)
+            {
+                newSlot = Instantiate(slotPrefab, hotbarGrid);
+            }
+            // Degilse -> Cantaya koy
+            else
+            {
+                newSlot = Instantiate(slotPrefab, inventoryGrid);
+            }
+
+            allSlots.Add(newSlot);
+        }
+
+        inventoryPanel.SetActive(false); // Cantayi gizle
+        UpdateSelection(); // Ilk secimi yap
         UpdateUI();
     }
 
     void Update()
     {
-        if (Keyboard.current != null && Keyboard.current.iKey.wasPressedThisFrame)
+        // "I" tusu -> Canta ac/kapa
+        if (Keyboard.current.iKey.wasPressedThisFrame)
         {
             inventoryPanel.SetActive(!inventoryPanel.activeSelf);
-            if (inventoryPanel.activeSelf)
-            {
-                UpdateUI();
-            }
+            if (inventoryPanel.activeSelf) UpdateUI();
+        }
+
+        // --- SAYI TUSLARI ILE SECIM (1-8) ---
+        if (Keyboard.current.digit1Key.wasPressedThisFrame) SelectSlot(0);
+        if (Keyboard.current.digit2Key.wasPressedThisFrame) SelectSlot(1);
+        if (Keyboard.current.digit3Key.wasPressedThisFrame) SelectSlot(2);
+        if (Keyboard.current.digit4Key.wasPressedThisFrame) SelectSlot(3);
+        if (Keyboard.current.digit5Key.wasPressedThisFrame) SelectSlot(4);
+        if (Keyboard.current.digit6Key.wasPressedThisFrame) SelectSlot(5);
+        if (Keyboard.current.digit7Key.wasPressedThisFrame) SelectSlot(6);
+        if (Keyboard.current.digit8Key.wasPressedThisFrame) SelectSlot(7);
+    }
+
+    void SelectSlot(int index)
+    {
+        selectedSlotIndex = index;
+        UpdateSelection();
+    }
+
+    void UpdateSelection()
+    {
+        if (selectorFrame != null && allSlots.Count > selectedSlotIndex)
+        {
+            selectorFrame.transform.SetParent(allSlots[selectedSlotIndex].transform);
+            selectorFrame.transform.localPosition = Vector3.zero;
+            selectorFrame.SetActive(true);
         }
     }
 
-    // --- YENI GUNCELLEME MANTIGI ---
+    // --- EKLEME 3: Guncellenmis UpdateUI ---
     public void UpdateUI()
     {
-        // DIKKAT: Artik eski slotlari silmiyoruz! (Destroy yok)
-
-        // 24 kutunun hepsini tek tek geziyoruz
-        for (int i = 0; i < slots.Count; i++)
+        for (int i = 0; i < allSlots.Count; i++)
         {
-            GameObject currentSlot = slots[i];
-            Image iconImage = currentSlot.transform.Find("Icon").GetComponent<Image>();
-            TextMeshProUGUI amountText = currentSlot.transform.Find("AmountText").GetComponent<TextMeshProUGUI>();
+            InventorySlot slotScript = allSlots[i].GetComponent<InventorySlot>();
 
-            // Eger bu sira numarasinda (i) envanterde bir esya varsa:
-            if (i < inventory.items.Count)
-            {
-                InventoryItem item = inventory.items[i];
+            // ESKI KOD: Buradaki if-else bloklarini sildik.
+            // YENI KOD: Tek satirda "Setup" cagiriyoruz.
+            // Setup fonksiyonu; resmi, sayiyi ve hangi listeye ait oldugunu kendi icinde hallediyor.
 
-                // Ikonu aktif et ve resmini koy
-                iconImage.enabled = true;
-                iconImage.sprite = item.data.icon;
-
-                // Sayiyi aktif et ve yaz
-                amountText.enabled = true;
-                amountText.text = item.quantity.ToString();
-            }
-            else
-            {
-                // Eger bu sirada esya yoksa, kutu bos gorunmeli
-                // Ikonu ve yaziyi gizle
-                iconImage.enabled = false;
-                amountText.enabled = false;
-            }
-        }
-    }
-
-    void OnDestroy()
-    {
-        if (inventory != null)
-        {
-            inventory.onItemChangedCallback -= UpdateUI;
+            slotScript.Setup(inventory.items, i, false);
+            // inventory.items -> Oyuncunun esya listesi
+            // i -> Sira numarasi
+            // false -> "Bu bir sandik degil" demek (Cunku bu script oyuncunun cantasi)
         }
     }
 }

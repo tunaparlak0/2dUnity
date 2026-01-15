@@ -8,4 +8,7 @@ public class ItemData : ScriptableObject
     public Sprite icon;      // Esyanin resmi (Iste aradigimiz sey!)
     [TextArea]
     public string description; // Ileride kullaniriz (Aciklama)
+    [Header("Yiginlama Ayarlari")]
+    public bool isStackable = true; // Ust uste binebilir mi?
+    public int maxStackSize = 10;   // En fazla kac tane olsun?
 }
