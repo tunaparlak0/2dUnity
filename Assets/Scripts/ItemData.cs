@@ -1,14 +1,24 @@
-using UnityEngine;
+﻿using UnityEngine;
 
-// Bu satir, Unity'nin sag tik menusune "Create Item" secenegi ekler
+// Eşya türlerini listeleyelim
+public enum ItemType
+{
+    Resource,   // Odun, Tas vb.
+    Tool,       // Capa, Balta, Kilic
+    Seed,       // Tohum
+    Consumable  // Yemek (Elma)
+}
+
 [CreateAssetMenu(fileName = "New Item", menuName = "Inventory/Item")]
 public class ItemData : ScriptableObject
 {
-    public string itemName;  // Esyanin adi
-    public Sprite icon;      // Esyanin resmi (Iste aradigimiz sey!)
-    [TextArea]
-    public string description; // Ileride kullaniriz (Aciklama)
-    [Header("Yiginlama Ayarlari")]
-    public bool isStackable = true; // Ust uste binebilir mi?
-    public int maxStackSize = 10;   // En fazla kac tane olsun?
+    public string itemName;
+    public Sprite icon;
+
+    [Header("Tur Ayarlari")]
+    public ItemType itemType; // <-- YENI: Bu esya ne tur?
+
+    [Header("Yiginlama")]
+    public bool isStackable = true;
+    public int maxStackSize = 99;
 }

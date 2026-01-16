@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 6744467218311436750}
   - component: {fileID: 6315146994378848385}
   m_Layer: 0
-  m_Name: Cherry
+  m_Name: Tomato_Seed
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -29,7 +29,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 2.4768226, y: -0.68, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.5, y: 0.5, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -83,7 +83,7 @@ SpriteRenderer:
   m_SortingLayer: 1
   m_SortingOrder: 0
   m_MaskInteraction: 0
-  m_Sprite: {fileID: -3960047960189947269, guid: ae8ea48b53156f2409cd28ba0498096a, type: 3}
+  m_Sprite: {fileID: 8953004699924504814, guid: 29fb42929806842439d13d326e29385a, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -141,5 +141,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 864d52d65e387104e848ddbb68f5d2b2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CollectibleItem
-  itemData: {fileID: 11400000, guid: 1cc1d0786fb04cf45a32e1ed6e64d71e, type: 2}
+  itemData: {fileID: 11400000, guid: 45afa4908ac523945bb0c2a0ab9f7f53, type: 2}
   amount: 1

@@ -77,6 +77,29 @@ public class PlayerInventory : MonoBehaviour
 
         if (onItemChangedCallback != null) onItemChangedCallback.Invoke();
     }
+    // --- EŞYA EKSİLTME FONKSİYONU ---
+    public void RemoveItem(ItemData itemToRemove, int amount)
+    {
+        foreach (InventoryItem item in items)
+        {
+            // Aradigimiz esya bu mu?
+            if (item.data == itemToRemove)
+            {
+                item.quantity -= amount;
+
+                // Eger sayi 0 veya daha az kalirsa, esyayi tamamen sil (Bosalt)
+                if (item.quantity <= 0)
+                {
+                    item.data = null;
+                    item.quantity = 0;
+                }
+
+                // UI Guncelle
+                if (onItemChangedCallback != null) onItemChangedCallback.Invoke();
+                return; // Islem tamam, donguden cik
+            }
+        }
+    }
 }
 
 [System.Serializable]

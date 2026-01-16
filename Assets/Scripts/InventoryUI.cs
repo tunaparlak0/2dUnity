@@ -114,4 +114,22 @@ public class InventoryUI : MonoBehaviour
             // false -> "Bu bir sandik degil" demek (Cunku bu script oyuncunun cantasi)
         }
     }
+    // Su an secili olan slotun icindeki esyanin VERISINI dondur
+    public ItemData GetSelectedItem()
+    {
+        // Secili slot gecersiz mi?
+        if (selectedSlotIndex >= allSlots.Count) return null;
+
+        InventorySlot slot = allSlots[selectedSlotIndex].GetComponent<InventorySlot>();
+
+        // Slot bos mu?
+        if (slot.myOwnerList == null || slot.myIndex >= slot.myOwnerList.Count) return null;
+
+        InventoryItem item = slot.myOwnerList[slot.myIndex];
+
+        // Item var mi?
+        if (item != null) return item.data;
+
+        return null;
+    }
 }

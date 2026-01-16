@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 6744467218311436750}
   - component: {fileID: 6315146994378848385}
   m_Layer: 0
-  m_Name: Cherry
+  m_Name: Hoe_Collectible
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -83,7 +83,7 @@ SpriteRenderer:
   m_SortingLayer: 1
   m_SortingOrder: 0
   m_MaskInteraction: 0
-  m_Sprite: {fileID: -3960047960189947269, guid: ae8ea48b53156f2409cd28ba0498096a, type: 3}
+  m_Sprite: {fileID: 5827638716017627413, guid: 0b4e87d5a2cd0124cb1dd726dc09b004, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -141,5 +141,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 864d52d65e387104e848ddbb68f5d2b2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CollectibleItem
-  itemData: {fileID: 11400000, guid: 1cc1d0786fb04cf45a32e1ed6e64d71e, type: 2}
+  itemData: {fileID: 11400000, guid: 013ad16f647312b4fade7256d9957bc9, type: 2}
   amount: 1
